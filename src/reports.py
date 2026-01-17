@@ -5,7 +5,7 @@ import pandas as pd
 from .app import count_shop_visits, shop_distance
 
 
-def generate_report() -> None:
+def generate_report() -> str:
     """Generate and print a report."""
     report_data = {}
 
@@ -22,6 +22,18 @@ def generate_report() -> None:
         "Subtotal km": sum(report_data["Subtotal km"].values()),
     }
 
-    print(df)
-    print("------------------------------------------------")
-    print("Total: ", total["Subtotal km"], "KM")
+    data = ""
+
+    with open("report.txt", "w") as f:
+        data += "KM Declaration Report\n"
+        data += "_" * 50 + "\n"
+        data += f"{df.to_string(justify='right')}\n"
+        data += "_" * 50 + "\n"
+        data += f"Total KM: {total['Subtotal km']} KM\n"
+        f.write("KM Declaration Report\n")
+        f.write("_" * 50 + "\n")
+        f.write(f"{df.to_string(justify='right')}\n")
+        f.write("_" * 50 + "\n\n")
+        f.write(f"Total KM: {total['Subtotal km']} KM\n")
+
+    return data
