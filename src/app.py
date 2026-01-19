@@ -10,15 +10,18 @@ with open("./bank_data.csv") as f:
     bank_data: list[list[str]] = list(data)
 
 
-hanos: str = "Hanos Heerlen"
-sligro: str = "Sligro ZB 5032"
-makro: str = "Makro Nuth"
-horeca_plus: str = "Horeca-Plus Nuth"
-eldee: str = "BCK*Eldee Pak Pak"
+class ShopTerminal:
+    """Shop terminal names."""
+
+    hanos: str = "Hanos Heerlen"
+    sligro: str = "Sligro ZB 5032"
+    makro: str = "Makro Nuth"
+    horeca_plus: str = "Horeca-Plus Nuth"
+    eldee: str = "BCK*Eldee Pak Pak"
 
 
 def count_shop_visits() -> dict[str, int]:
-    """Count visits to each store in the shop list."""
+    """Count visits to each shop in the shop list."""
     store_count: dict[str, int] = {
         "Hanos": 0,
         "Sligro": 0,
@@ -30,30 +33,40 @@ def count_shop_visits() -> dict[str, int]:
     for item in bank_data:
         terminal_name = item[9]
 
-        if terminal_name == hanos:
+        if terminal_name == ShopTerminal.hanos:
             store_count["Hanos"] += 1
-        elif terminal_name == sligro:
+        elif terminal_name == ShopTerminal.sligro:
             store_count["Sligro"] += 1
-        elif terminal_name == makro:
+        elif terminal_name == ShopTerminal.makro:
             store_count["Makro"] += 1
-        elif terminal_name == horeca_plus:
+        elif terminal_name == ShopTerminal.horeca_plus:
             store_count["Horeca-Plus"] += 1
-        elif terminal_name == eldee:
+        elif terminal_name == ShopTerminal.eldee:
             store_count["Eldee"] += 1
 
     return store_count
 
 
+class ShopDistance:
+    """Shop location distances."""
+
+    hanos = 6.0
+    sligro = 4.8
+    makro = 9.5
+    horeca_plus = 11.8
+    eldee = 4.3
+
+
 def shop_distance() -> dict[str, float]:
-    """Calculate the round-trip distance to each shop."""
-    roundtrip = 2  # round trip multiplier
+    """Calculate the roundtrip distance to each shop."""
+    roundtrip = 2  # roundtrip multiplier - 2 for round trip and 1 for one way.
 
     distance: dict[str, float] = {
-        "Hanos": round(6.0 * roundtrip),
-        "Sligro": round(4.8 * roundtrip),
-        "Makro": round(9.5 * roundtrip),
-        "Horeca-Plus": round(11.8 * roundtrip),
-        "Eldee": round(4.3 * roundtrip),
+        "Hanos": round(ShopDistance.hanos * roundtrip),
+        "Sligro": round(ShopDistance.sligro * roundtrip),
+        "Makro": round(ShopDistance.makro * roundtrip),
+        "Horeca-Plus": round(ShopDistance.horeca_plus * roundtrip),
+        "Eldee": round(ShopDistance.eldee * roundtrip),
     }
 
     return distance
