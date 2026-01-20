@@ -5,9 +5,13 @@ import csv
 bank_data = []
 
 # NOTE: The path is based on the CWD's execution path from main.py.
-with open("./bank_data.csv") as f:
-    data = csv.reader(f)
-    bank_data: list[list[str]] = list(data)
+# Rabobank uses Windows-1252 encoding.
+try:
+    with open("./bank_data.csv", encoding="windows-1252") as f:
+        data = csv.reader(f)
+        bank_data: list[list[str]] = list(data)
+except FileNotFoundError:
+    print("Please ensure 'bank_data.csv' is in the project root directory.")
 
 
 class ShopTerminal:
@@ -70,3 +74,47 @@ def shop_distance() -> dict[str, float]:
     }
 
     return distance
+
+
+valid_names: dict[str, str] = {
+    "Hanos": ShopTerminal.hanos,
+    "Sligro": ShopTerminal.sligro,
+    "Makro": ShopTerminal.makro,
+    "Horeca-Plus": ShopTerminal.horeca_plus,
+    "Eldee": ShopTerminal.eldee,
+}
+
+
+def purchase_dates(shop_name: str) -> dict[str, list[dict[str, str]]]:
+    """
+    Get a list of purchase dates and transaction IDs for a given shop.
+
+    Args:
+        shop_name (str): The name of the shop.
+
+    """
+    shop_name = shop_name.title()
+
+    details: dict[str, list[dict[str, str]]] = {shop_name: []}
+
+    if shop_name not in valid_names:
+        msg = f"Shop '{shop_name}' is not recognized."
+        raise ValueError(msg)
+
+    for item in bank_data:
+        date = item[4]
+        terminal_name = item[9]
+        transaction_id = item[15]
+
+        if terminal_name in (
+            ShopTerminal.hanos,
+            ShopTerminal.sligro,
+            ShopTerminal.makro,
+            ShopTerminal.horeca_plus,
+            ShopTerminal.eldee,
+        ):
+            details[shop_name].append(
+                {"date": date, "transaction_id": transaction_id},
+            )
+
+    return details
