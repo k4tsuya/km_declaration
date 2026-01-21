@@ -2,16 +2,30 @@
 
 import csv
 
-bank_data = []
 
 # NOTE: The path is based on the CWD's execution path from main.py.
 # Rabobank uses Windows-1252 encoding.
-try:
-    with open("./bank_data.csv", encoding="windows-1252") as f:
-        data = csv.reader(f)
-        bank_data: list[list[str]] = list(data)
-except FileNotFoundError:
-    print("Please ensure 'bank_data.csv' is in the project root directory.")
+def load_bank_data(
+    filename: str = "./bank_data.csv",
+) -> list[list[str]] | None:
+    """
+    Load bank data from CSV file.
+
+    Unless specified, it looks for 'bank_data.csv' in the project root.
+    """
+    try:
+        with open(filename, encoding="windows-1252") as f:
+            data = csv.reader(f)
+            loaded_data: list[list[str]] = list(data)
+            return loaded_data
+    except FileNotFoundError:
+        print(
+            "Please ensure 'bank_data.csv' is in the project root directory.",
+        )
+        return None
+
+
+bank_data = load_bank_data() or []
 
 
 class ShopTerminal:
