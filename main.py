@@ -2,12 +2,14 @@
 
 from src.app import load_bank_data, purchase_dates
 from src.data_generation import (
-    generate_purchase_data,
     generate_declaration_data,
+    generate_purchase_data,
 )
-from src.report_generation import print_declaration_report
+from src.report_generation import (
+    print_declaration_report,
+    print_purchase_report,
+)
 
 if __name__ == "__main__":
-    load_bank_data()
-    generate_declaration_data()
     print_declaration_report()
+    print_purchase_report("Sligro")
