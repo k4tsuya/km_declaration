@@ -11,11 +11,13 @@ from src.data_filter import (
 from src.report_generation import (
     print_declaration_report,
     print_purchase_report,
+    print_date_report,
 )
 
 if __name__ == "__main__":
     # print_declaration_report()
     # print_purchase_report("Sligro")
-    # print(filter_date("2025-12-24"))
+    # filter_date("2025-12-24")
     # print(filter_bank_number("936"))
-    filter_name("ma")
+    # filter_name("ma")
+    print_date_report("2025-12-24")
