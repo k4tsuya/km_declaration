@@ -1,11 +1,15 @@
-
-# km_declaration *(working title, subject to rename)*
-
-**km_declaration** is a Python backend project that processes transaction exports from **Rabobank** to generate useful business reports. It identifies and counts transactions at specific locations, calculates estimated driven kilometers for travel declarations, and can produce detailed purchase summaries — including PDF reports.
-
-This project started as an internal tool for a snackbar where I work, and is now shared as part of my **junior backend developer portfolio** to demonstrate pragmatic data processing and automation skills.
-
 ---
+
+# Transaction Analyzer
+
+**Transaction Analyzer** is a Python-based backend project that processes transaction exports from **Rabobank** to analyze, filter, and report on financial transaction data.
+
+The application allows users to search transactions by  **IBAN**,  **counterparty name**, and  **date**, generate summaries for specific shops or locations, estimate driven kilometers based on transaction frequency, and export reports as  **PDF files** .
+
+This project was originally developed for **private workplace use** (a snackbar) and is now maintained as part of my  **junior backend developer portfolio** , demonstrating practical data processing, reporting, and automation skills in Python.
+
+> **Status:** Actively developed — new features and reports are added over time as the project evolves.
+>
 
 ## 📌 Project Summary
 
