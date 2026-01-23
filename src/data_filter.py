@@ -48,7 +48,7 @@ def filter_date(purchase_date: str) -> pd.DataFrame:
 
 
 def filter_bank_number(iban: str) -> pd.DataFrame:
-    """Filter bank data for a specific bank number."""
+    """Filter bank data for a specific IBAN number."""
     data = {iban: []}
 
     for item in bank_data:
@@ -68,4 +68,28 @@ def filter_bank_number(iban: str) -> pd.DataFrame:
                 },
             )
 
+    return pd.DataFrame(data)
+
+
+def filter_name(name: str) -> pd.DataFrame:
+    """Filter bank data for a specific name."""
+    data = {name: []}
+
+    for item in bank_data:
+        counter_party_name = item[9]
+        date = item[4]
+        iban = item[8]
+        amount = item[6]
+        description = item[19]
+        if name.lower() in counter_party_name.lower():
+            data[name].append(
+                {
+                    "Name": counter_party_name,
+                    "IBAN": iban,
+                    "Date": date,
+                    "Amount": amount,
+                    "Description": description,
+                },
+            )
+    print(data)
     return pd.DataFrame(data)
