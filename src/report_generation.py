@@ -4,7 +4,7 @@ from fpdf import FPDF
 
 from src.data_filter import (
     filter_bank_number,
-    filter_date,
+    filter_dates,
     filter_name,
     filter_purchase_data,
     generate_declaration_data,
@@ -18,12 +18,12 @@ class PDFReport(FPDF):
 
     def header(self) -> None:
         """Create the header for the PDF report."""
-        self.set_font("Courier", "B", 10)
+        self.set_font("Courier", "B", 8)
         self.cell(0, 10, f"{self.report}", ln=True, align="L")
 
     def add_table(self, data: str) -> None:
         """Add a table to the PDF report."""
-        self.set_font("Courier", size=8)
+        self.set_font("Courier", size=6)
 
         for line in data.split("\n"):
             self.cell(0, 5, line, ln=True, align="L")
@@ -52,7 +52,7 @@ def print_purchase_report(shop_name: str) -> None:
     pdf = PDFReport()
     pdf.report = f"Purchase Summary Report - {shop_name}"
     pdf.add_page()
-    pdf.set_font("Courier", size=8)
+    pdf.set_font("Courier", size=6)
     pdf.cell(0, 5, "_" * 60)
     pdf.ln()
     pdf.add_table(df.to_string(index=False, justify="right"))
@@ -60,21 +60,24 @@ def print_purchase_report(shop_name: str) -> None:
     print("Purchase report generated: purchase_report.pdf")
 
 
-def print_date_report(purchase_date: str) -> None:
+def print_date_report(start_date: str, end_date: str | None) -> None:
     """Generate and print the date-specific report as a PDF."""
-    df = filter_date(purchase_date)
+    df = filter_dates(start_date, end_date)
 
     pdf = PDFReport()
-    pdf.report = f"Date Summary Report - {purchase_date}"
+    pdf.report = (
+        f"Date Summary Report  {start_date} - {end_date or start_date}"
+    )
     pdf.add_page()
-    pdf.set_font("Courier", size=8)
+    pdf.set_font("Courier", size=6)
     pdf.cell(0, 5, "_" * 60, ln=True)
 
     table = [
-        ("IBAN", 35, "L"),
-        ("Counter Party", 60, "L"),
-        ("Amount", 15, "R"),
-        ("Description", 80, "L"),
+        ("Date", 20, "L"),
+        ("Counter Party", 50, "L"),
+        ("Amount", 10, "R"),
+        ("IBAN", 25, "L"),
+        ("Description", 100, "L"),
     ]
 
     for title, width, _ in table:
@@ -83,7 +86,7 @@ def print_date_report(purchase_date: str) -> None:
 
     for _, row in df.iterrows():
         for title, width, align in table:
-            pdf.cell(width, 5, str(row[title])[:40], align=align)
+            pdf.cell(width, 5, str(row[title])[:60], align=align)
         pdf.ln()
 
     pdf.output("date_report.pdf")

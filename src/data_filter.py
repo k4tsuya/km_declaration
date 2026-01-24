@@ -28,9 +28,13 @@ def filter_purchase_data(
     return pd.DataFrame(report_data[shop_name])
 
 
-def filter_date(purchase_date: str) -> pd.DataFrame:
+def filter_dates(
+    start_date: str,
+    end_date: str | None,
+) -> pd.DataFrame:
     """Filter bank data for a specific date."""
-    data = {purchase_date: []}
+    end_date = end_date if end_date else start_date
+    data = {"Filtered Purchases": []}
 
     for item in bank_data:
         date = item[4]
@@ -38,16 +42,17 @@ def filter_date(purchase_date: str) -> pd.DataFrame:
         counter_party = item[9]
         amount = item[6]
         description = item[19]
-        if purchase_date == date:
-            data[purchase_date].append(
+        if start_date <= date <= end_date:
+            data["Filtered Purchases"].append(
                 {
-                    "IBAN": counter_iban,
+                    "Date": date,
                     "Counter Party": counter_party,
                     "Amount": amount,
+                    "IBAN": counter_iban,
                     "Description": description,
                 },
             )
-    return pd.DataFrame(data[purchase_date])
+    return pd.DataFrame(data["Filtered Purchases"])
 
 
 def filter_bank_number(iban: str) -> pd.DataFrame:
